@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Typing pattern example</title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="../src/ng-keystroke-dynamics.js"></script>
+</head>
+
+<body ng-app="formExample">
+<div ng-controller="ExampleController">
+    <h1>Directive example</h1>
+    <p>Use this input to get an idea of the ngTypingPattern directive:</p>
+    <form>
+        Password: <input type="password" keystroke-dynamics ng-model="pwd" /><br />
+        <input type="button" ng-click="reset()" value="Reset" />
+        <input type="submit" ng-click="savePattern()" value="Send" />
+    </form>
+    <h3>The password that you are typing:</h3>
+    <pre>Typed password = {{pwd | json}}</pre>
+    <h3>Your typing pattern that the directive is acquiring:</h3>
+    <pre>typingPattern = {{keystrokeDynamics | json}}</pre>
+    <h3>This is the information that an hypothetical back-end module can use to identifying the user:</h3>
+    <pre>Collected patterns = {{typed_passwords | json}}</pre>
+</div>
+
+<script>
+    angular.module('formExample', ['ngKeystrokeDynamics'])
+            .controller('ExampleController', ['$scope', function($scope) {
+
+                $scope.typed_passwords = []; // this is actually done in the back-end
+
+                // Save the pattern for example purpose
+                $scope.savePattern = function() {
+                    $scope.typed_passwords.push($scope.keystrokeDynamics);
+                    $scope.pwd = undefined;
+                };
+
+                $scope.reset = function() {
+                    $scope.pwd = undefined;
+                };
+
+            }])
+
+</script>
+</body>
+</html>
